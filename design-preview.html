@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>beehiiv Ad Network — Case Studies (Preview)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #FAFAFA; color: #0F1117; -webkit-font-smoothing: antialiased; }
+
+    /* ── NAV ── */
+    header { background: #fff; border-bottom: 1px solid #E5E7EB; position: sticky; top: 0; z-index: 10; }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { display: flex; align-items: center; gap: 10px; }
+    .nav-brand-name { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; color: #0F1117; }
+    .nav-brand-sub { font-size: 13px; font-weight: 500; color: #9CA3AF; }
+    .nav-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #FF6B35; }
+    .nav-tab { display: flex; gap: 4px; }
+    .nav-tab button { padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all .15s; }
+    .nav-tab .active { background: #FF6B35; color: #fff; }
+    .nav-tab .inactive { background: transparent; color: #6B7280; }
+    .nav-tab .inactive:hover { background: #F3F4F6; color: #0F1117; }
+
+    /* ── HERO ── */
+    .hero { max-width: 1200px; margin: 0 auto; padding: 56px 24px 40px; }
+    .hero h1 { font-size: 38px; font-weight: 800; letter-spacing: -1px; color: #0F1117; line-height: 1.15; }
+    .hero h1 span { color: #FF6B35; }
+    .hero p { margin-top: 12px; font-size: 17px; color: #6B7280; max-width: 520px; line-height: 1.6; }
+    .hero-meta { margin-top: 20px; display: flex; gap: 24px; }
+    .hero-stat { display: flex; flex-direction: column; }
+    .hero-stat-num { font-size: 22px; font-weight: 700; color: #0F1117; }
+    .hero-stat-label { font-size: 12px; color: #9CA3AF; font-weight: 500; margin-top: 1px; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar { max-width: 1200px; margin: 0 auto; padding: 0 24px 28px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .filter-chip { padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1.5px solid transparent; transition: all .15s; }
+    .filter-chip.active { background: #0F1117; color: #fff; border-color: #0F1117; }
+    .filter-chip.inactive { background: #fff; color: #6B7280; border-color: #E5E7EB; }
+    .filter-chip.inactive:hover { border-color: #0F1117; color: #0F1117; }
+
+    /* ── GRID ── */
+    .grid-wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px 64px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 580px) { .grid { grid-template-columns: 1fr; } }
+
+    /* ── CARD ── */
+    .card { background: #fff; border-radius: 16px; border: 1px solid #E5E7EB; overflow: hidden; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
+    .card-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; background: #F3F4F6; }
+    .card-img-placeholder { width: 100%; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; letter-spacing: 0.05em; }
+    .card-body { padding: 18px 20px 20px; }
+    .card-advertiser { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #FF6B35; margin-bottom: 5px; }
+    .card-title { font-size: 15px; font-weight: 600; color: #0F1117; line-height: 1.4; }
+    .card-footer { margin-top: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .card-tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #FFF3EE; color: #FF6B35; }
+    .card-arrow { width: 28px; height: 28px; border-radius: 8px; background: #F3F4F6; display: flex; align-items: center; justify-content: center; color: #9CA3AF; transition: background .15s, color .15s; }
+    .card:hover .card-arrow { background: #FF6B35; color: #fff; }
+
+    /* ── MODAL ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.75); backdrop-filter: blur(4px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: #fff; border-radius: 20px; width: 100%; max-width: 880px; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 32px 80px rgba(0,0,0,.35); transform: scale(.97); transition: transform .2s; }
+    .modal-overlay.open .modal { transform: scale(1); }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #E5E7EB; flex-shrink: 0; }
+    .modal-header-left .modal-advertiser { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #FF6B35; }
+    .modal-header-left .modal-title { font-size: 18px; font-weight: 700; color: #0F1117; margin-top: 3px; }
+    .modal-close { width: 36px; height: 36px; border-radius: 10px; border: none; background: #F3F4F6; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6B7280; font-size: 18px; transition: background .15s; flex-shrink: 0; }
+    .modal-close:hover { background: #E5E7EB; color: #0F1117; }
+    .modal-body { overflow-y: auto; flex: 1; }
+    .modal-body img { width: 100%; display: block; }
+    .modal-placeholder { width: 100%; height: 480px; background: linear-gradient(135deg, #FFF3EE 0%, #FFE4D6 50%, #FFDCC8 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+    .modal-placeholder-icon { font-size: 48px; }
+    .modal-placeholder-text { font-size: 14px; color: #9CA3AF; font-weight: 500; }
+    .modal-placeholder-sub { font-size: 13px; color: #C4C4C4; }
+
+    /* ── ADMIN VIEW ── */
+    .admin-wrap { max-width: 960px; margin: 0 auto; padding: 48px 24px 64px; }
+    .admin-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 36px; }
+    .admin-header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+    .admin-header p { font-size: 13px; color: #9CA3AF; margin-top: 4px; }
+    .signout-btn { font-size: 13px; color: #9CA3AF; background: none; border: none; cursor: pointer; padding: 4px 0; }
+    .signout-btn:hover { color: #0F1117; }
+
+    .form-card { background: #fff; border: 1px solid #E5E7EB; border-radius: 16px; padding: 28px; margin-bottom: 36px; }
+    .form-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-field label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+    .form-field input { width: 100%; border: 1.5px solid #E5E7EB; border-radius: 10px; padding: 9px 12px; font-size: 14px; color: #0F1117; outline: none; transition: border-color .15s; font-family: inherit; }
+    .form-field input:focus { border-color: #FF6B35; box-shadow: 0 0 0 3px rgba(255,107,53,.1); }
+    .form-field input::placeholder { color: #C4C4C4; }
+    .submit-btn { background: #FF6B35; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s; font-family: inherit; }
+    .submit-btn:hover { background: #E85A24; }
+
+    .table-card { background: #fff; border: 1px solid #E5E7EB; border-radius: 16px; overflow: hidden; }
+    .table-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 16px; border-bottom: 1px solid #E5E7EB; }
+    .table-header h2 { font-size: 16px; font-weight: 700; }
+    .table-header .count-badge { background: #F3F4F6; color: #6B7280; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: #F9FAFB; }
+    thead th { text-align: left; padding: 10px 20px; font-size: 12px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid #E5E7EB; }
+    tbody tr { border-bottom: 1px solid #F3F4F6; transition: background .1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #FAFAFA; }
+    tbody td { padding: 13px 20px; font-size: 14px; color: #374151; }
+    tbody td.title-cell { font-weight: 600; color: #0F1117; max-width: 240px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    tbody td.advertiser-cell { color: #FF6B35; font-weight: 500; }
+    .delete-btn { color: #EF4444; font-size: 13px; font-weight: 500; background: none; border: none; cursor: pointer; transition: color .15s; font-family: inherit; }
+    .delete-btn:hover { color: #B91C1C; }
+
+    /* ── LOGIN VIEW ── */
+    .login-wrap { min-height: calc(100vh - 64px); display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .login-card { background: #fff; border: 1px solid #E5E7EB; border-radius: 20px; padding: 40px 36px; width: 100%; max-width: 400px; box-shadow: 0 4px 24px rgba(0,0,0,.06); }
+    .login-card h1 { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 6px; }
+    .login-card .login-sub { font-size: 14px; color: #9CA3AF; text-align: center; margin-bottom: 28px; }
+    .login-field { margin-bottom: 16px; }
+    .login-field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #374151; }
+    .login-field input { width: 100%; border: 1.5px solid #E5E7EB; border-radius: 10px; padding: 10px 14px; font-size: 14px; outline: none; transition: border-color .15s; font-family: inherit; }
+    .login-field input:focus { border-color: #FF6B35; box-shadow: 0 0 0 3px rgba(255,107,53,.1); }
+    .login-btn { width: 100%; background: #FF6B35; color: #fff; border: none; border-radius: 10px; padding: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 8px; transition: background .15s; font-family: inherit; }
+    .login-btn:hover { background: #E85A24; }
+
+    /* ── VIEW SWITCHER ── */
+    .view-switcher { display: flex; gap: 8px; justify-content: center; padding: 20px 24px 0; }
+    .view-btn { padding: 8px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid #E5E7EB; background: #fff; color: #6B7280; font-family: inherit; transition: all .15s; }
+    .view-btn.active { background: #0F1117; color: #fff; border-color: #0F1117; }
+    .view-btn:hover:not(.active) { border-color: #0F1117; color: #0F1117; }
+    .view-label { text-align: center; font-size: 12px; color: #9CA3AF; padding-bottom: 4px; font-weight: 500; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header>
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <span class="nav-brand-name">beehiiv</span>
+        <span class="nav-brand-sub">Ad Network</span>
+      </div>
+      <span class="nav-badge">Case Studies</span>
+    </div>
+  </header>
+
+  <!-- VIEW SWITCHER (demo only) -->
+  <div style="background:#F3F4F6; padding: 16px 24px 0;">
+    <p class="view-label">DEMO — switch between views</p>
+    <div class="view-switcher">
+      <button class="view-btn active" onclick="show('gallery')">Gallery (Public)</button>
+      <button class="view-btn" onclick="show('modal')">Card Modal</button>
+      <button class="view-btn" onclick="show('admin')">Admin Dashboard</button>
+      <button class="view-btn" onclick="show('login')">Admin Login</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ GALLERY VIEW ═══════════════════ -->
+  <div id="view-gallery">
+    <div class="hero">
+      <h1>Advertiser <span>Case Studies</span></h1>
+      <p>Real results from brands growing with the beehiiv Ad Network. Click any card to see the full case study.</p>
+      <div class="hero-meta">
+        <div class="hero-stat">
+          <span class="hero-stat-num">40M+</span>
+          <span class="hero-stat-label">Readers reached</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">2,400+</span>
+          <span class="hero-stat-label">Publisher partners</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">3.2×</span>
+          <span class="hero-stat-label">Avg. ROAS reported</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <span class="filter-chip active">All</span>
+      <span class="filter-chip inactive">SaaS</span>
+      <span class="filter-chip inactive">E-commerce</span>
+      <span class="filter-chip inactive">Finance</span>
+      <span class="filter-chip inactive">Consumer</span>
+      <span class="filter-chip inactive">B2B</span>
+    </div>
+
+    <div class="grid-wrap">
+      <div class="grid">
+
+        <!-- Card 1 -->
+        <div class="card" onclick="show('modal')">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg,#FFF3EE,#FFD4BC); color:#FF6B35;">THUMBNAIL</div>
+          <div class="card-body">
+            <div class="card-advertiser">Morning Brew</div>
+            <div class="card-title">How Morning Brew drove 12,000 signups in 6 weeks with beehiiv Boosts</div>
+            <div class="card-footer">
+              <span class="card-tag">Media</span>
+              <span class="card-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" onclick="show('modal')">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg,#EEF2FF,#C7D2FE); color:#6366F1;">THUMBNAIL</div>
+          <div class="card-body">
+            <div class="card-advertiser">Notion</div>
+            <div class="card-title">Notion grew trial activations 3× by sponsoring beehiiv creator newsletters</div>
+            <div class="card-footer">
+              <span class="card-tag">SaaS</span>
+              <span class="card-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" onclick="show('modal')">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg,#F0FDF4,#BBF7D0); color:#16A34A;">THUMBNAIL</div>
+          <div class="card-body">
+            <div class="card-advertiser">Robinhood</div>
+            <div class="card-title">Robinhood's finance newsletter campaign hit a 6.1% CTR — 4× industry average</div>
+            <div class="card-footer">
+              <span class="card-tag">Finance</span>
+              <span class="card-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" onclick="show('modal')">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg,#FEF9C3,#FDE68A); color:#D97706;">THUMBNAIL</div>
+          <div class="card-body">
+            <div class="card-advertiser">AG1</div>
+            <div class="card-title">AG1 scaled their DTC email acquisition 2× using beehiiv's ad network</div>
+            <div class="card-footer">
+              <span class="card-tag">Consumer</span>
+              <span class="card-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" onclick="show('modal')">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg,#FDF2F8,#FBCFE8); color:#BE185D;">THUMBNAIL</div>
+          <div class="card-body">
+            <div class="card-advertiser">Shopify</div>
+            <div class="card-title">Shopify reached 800K engaged founders and operators in one newsletter drop</div>
+            <div class="card-footer">
+              <span class="card-tag">SaaS</span>
+              <span class="card-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card" onclick="show('modal')">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg,#F0F9FF,#BAE6FD); color:#0284C7;">THUMBNAIL</div>
+          <div class="card-body">
+            <div class="card-advertiser">Coinbase</div>
+            <div class="card-title">Coinbase drove 22K crypto-curious sign-ups at $3.80 CPA via beehiiv Ads</div>
+            <div class="card-footer">
+              <span class="card-tag">Finance</span>
+              <span class="card-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ MODAL VIEW ═══════════════════ -->
+  <div id="view-modal" style="display:none; background:#FAFAFA; min-height:calc(100vh - 120px); display:none; align-items:center; justify-content:center; padding: 40px 24px;">
+    <div class="modal" style="max-height: 560px; display:flex; flex-direction:column;">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <div class="modal-advertiser">Morning Brew</div>
+          <div class="modal-title">How Morning Brew drove 12,000 signups in 6 weeks with beehiiv Boosts</div>
+        </div>
+        <button class="modal-close" onclick="show('gallery')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-placeholder">
+          <div class="modal-placeholder-icon">📄</div>
+          <div class="modal-placeholder-text">Full case study image loads here</div>
+          <div class="modal-placeholder-sub">Hosted externally — displayed as a full-width image</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ ADMIN VIEW ═══════════════════ -->
+  <div id="view-admin" style="display:none;">
+    <div class="admin-wrap">
+      <div class="admin-header">
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p>team@beehiiv.com</p>
+        </div>
+        <button class="signout-btn">Sign out</button>
+      </div>
+
+      <!-- Add form -->
+      <div class="form-card">
+        <h2>Add New Case Study</h2>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Title</label>
+            <input type="text" placeholder="How Brand X grew 3× with beehiiv" />
+          </div>
+          <div class="form-field">
+            <label>Advertiser Name</label>
+            <input type="text" placeholder="Acme Corp" />
+          </div>
+          <div class="form-field">
+            <label>Thumbnail Image URL</label>
+            <input type="url" placeholder="https://..." />
+          </div>
+          <div class="form-field">
+            <label>Full Case Study Image URL</label>
+            <input type="url" placeholder="https://..." />
+          </div>
+        </div>
+        <button class="submit-btn">Add Case Study</button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-card">
+        <div class="table-header">
+          <h2>All Case Studies</h2>
+          <span class="count-badge">6 entries</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Advertiser</th>
+              <th>Added</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="title-cell">How Morning Brew drove 12,000 signups in 6 weeks</td>
+              <td class="advertiser-cell">Morning Brew</td>
+              <td style="color:#9CA3AF; font-size:13px;">May 6, 2026</td>
+              <td><button class="delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td class="title-cell">Notion grew trial activations 3× by sponsoring newsletters</td>
+              <td class="advertiser-cell">Notion</td>
+              <td style="color:#9CA3AF; font-size:13px;">May 4, 2026</td>
+              <td><button class="delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td class="title-cell">Robinhood's finance newsletter campaign hit 6.1% CTR</td>
+              <td class="advertiser-cell">Robinhood</td>
+              <td style="color:#9CA3AF; font-size:13px;">May 1, 2026</td>
+              <td><button class="delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td class="title-cell">AG1 scaled DTC email acquisition 2× using beehiiv Ads</td>
+              <td class="advertiser-cell">AG1</td>
+              <td style="color:#9CA3AF; font-size:13px;">Apr 28, 2026</td>
+              <td><button class="delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td class="title-cell">Shopify reached 800K founders in one newsletter drop</td>
+              <td class="advertiser-cell">Shopify</td>
+              <td style="color:#9CA3AF; font-size:13px;">Apr 22, 2026</td>
+              <td><button class="delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td class="title-cell">Coinbase drove 22K sign-ups at $3.80 CPA via beehiiv</td>
+              <td class="advertiser-cell">Coinbase</td>
+              <td style="color:#9CA3AF; font-size:13px;">Apr 18, 2026</td>
+              <td><button class="delete-btn">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ LOGIN VIEW ═══════════════════ -->
+  <div id="view-login" style="display:none;">
+    <div class="login-wrap">
+      <div class="login-card">
+        <h1>Admin Login</h1>
+        <p class="login-sub">beehiiv team members only</p>
+        <div class="login-field">
+          <label>Email</label>
+          <input type="email" placeholder="you@beehiiv.com" />
+        </div>
+        <div class="login-field">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••" />
+        </div>
+        <button class="login-btn" onclick="show('admin')">Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function show(view) {
+      ['gallery','modal','admin','login'].forEach(v => {
+        const el = document.getElementById('view-' + v);
+        el.style.display = v === view ? (v === 'modal' ? 'flex' : 'block') : 'none';
+      });
+      document.querySelectorAll('.view-btn').forEach((btn, i) => {
+        const views = ['gallery','modal','admin','login'];
+        btn.classList.toggle('active', views[i] === view);
+      });
+      window.scrollTo(0, 0);
+    }
+    show('gallery');
+  </script>
+
+</body>
+</html>
