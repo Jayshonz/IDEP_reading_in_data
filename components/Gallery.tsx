@@ -1,16 +1,31 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { CaseStudy } from "@/lib/types";
 import CaseStudyCard from "./CaseStudyCard";
 import CaseStudyModal from "./CaseStudyModal";
 
 interface Props {
   studies: CaseStudy[];
+  initialStudyId?: string;
 }
 
-export default function Gallery({ studies }: Props) {
-  const [selected, setSelected] = useState<CaseStudy | null>(null);
+export default function Gallery({ studies, initialStudyId }: Props) {
+  const router = useRouter();
+  const [selected, setSelected] = useState<CaseStudy | null>(
+    () => studies.find((s) => s.id === initialStudyId) ?? null
+  );
+
+  const openStudy = (study: CaseStudy) => {
+    setSelected(study);
+    router.replace(`/?study=${study.id}`, { scroll: false });
+  };
+
+  const closeStudy = () => {
+    setSelected(null);
+    router.replace("/", { scroll: false });
+  };
 
   if (studies.length === 0) {
     return (
@@ -29,12 +44,12 @@ export default function Gallery({ studies }: Props) {
           <CaseStudyCard
             key={study.id}
             study={study}
-            onClick={setSelected}
+            onClick={openStudy}
           />
         ))}
       </div>
       {selected && (
-        <CaseStudyModal study={selected} onClose={() => setSelected(null)} />
+        <CaseStudyModal study={selected} onClose={closeStudy} />
       )}
     </>
   );

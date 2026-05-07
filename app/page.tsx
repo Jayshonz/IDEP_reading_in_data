@@ -4,7 +4,11 @@ import { CaseStudy } from "@/lib/types";
 
 export const revalidate = 60;
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: { study?: string };
+}) {
   const supabase = await createClient();
   const { data: studies } = await supabase
     .from("case_studies")
@@ -22,7 +26,10 @@ export default async function HomePage() {
           any card to see the full case study.
         </p>
       </div>
-      <Gallery studies={(studies as CaseStudy[]) ?? []} />
+      <Gallery
+        studies={(studies as CaseStudy[]) ?? []}
+        initialStudyId={searchParams.study}
+      />
     </div>
   );
 }
